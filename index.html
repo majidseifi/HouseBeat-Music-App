@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=500, initial-scale=1" />
+    <meta name="author" content="Majid Seifi Kashani" />
+
+    <title>HouseBeat Music App</title>
+    <!-- Classless CSS Stylesheet (feel free to change) - https://watercss.kognise.dev/ -->
+    <link rel="stylesheet" href="./css/water.css" />
+    <link rel="stylesheet" href="./css/custom.css" />
+  </head>
+  <body>
+    <header>
+      <!-- Change this to your App's info -->
+      <h1>HouseBeat</h1>
+      <p>Where you can find the best house musics</p>
+    </header>
+
+    <nav id="menu">
+      <!-- Dynamically create your menu category buttons here -->
+    </nav>
+
+    <hr />
+
+    <main role="main">
+      <h2>Selected Artist: <span id="selected-artist"></span></h2>
+      <div id="artist-links"></div>
+      <div id="songs-container"></div>
+    </main>
+
+    <footer>
+      <form id="newsletter-form" action="https://httpbin.org/post" method="POST">
+        <h3>Subscribe to Our Newsletter</h3>
+        <div style="display: flex; gap: 10px; max-width: 500px">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email address"
+            required
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            title="Please enter a valid email address"
+          />
+          <button type="submit">Subscribe</button>
+        </div>
+      </form>
+
+      <script>
+        document.getElementById("newsletter-form").addEventListener("submit", function (e) {
+          e.preventDefault();
+          const email = document.getElementById("email").value;
+
+          // Additional validation to ensure email contains a period after @
+          if (!email.includes("@") || !email.substring(email.indexOf("@")).includes(".")) {
+            alert("Please enter a valid email address with a domain (e.g., example@domain.com)");
+            return;
+          }
+
+          const formData = new FormData(this);
+
+          fetch("https://httpbin.org/post", {
+            method: "POST",
+            body: formData
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Server Response:", data);
+              alert("Subscription submitted successfully!");
+              this.reset();
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("Error submitting the form. Please try again.");
+            });
+        });
+      </script>
+    </footer>
+    <!-- JavaScript Data Files -->
+    <script src="./js/artists.js"></script>
+    <script src="./js/songs.js"></script>
+    <!-- Main App JavaScript File -->
+    <script src="./js/app.js"></script>
+  </body>
+</html>

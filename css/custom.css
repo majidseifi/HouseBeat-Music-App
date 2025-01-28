@@ -1,0 +1,57 @@
+/* custom.css */
+
+/* Increase main container width */
+body {
+  max-width: 1200px !important; /* Override water.css max-width */
+}
+
+/* Card container */
+#songs-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  justify-content: flex-start; /* Align cards to the start */
+}
+
+/* Individual card */
+.song-card {
+  width: calc(33.33% - 14px); /* Exactly 3 cards per row, accounting for gap */
+  background-color: var(--background-alt);
+  border-radius: 8px;
+  padding: 0;
+  overflow: hidden; /* Keep everything inside the border radius */
+  transition: transform 0.2s;
+}
+
+/* Basic hover effect */
+.song-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Card image */
+.song-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block; /* Remove any extra space below image */
+}
+
+/* Card content area */
+.song-info {
+  padding: 15px;
+}
+
+/* Card title */
+.song-card h3 {
+  margin: 5px 0 0 15px;
+  font-size: 1.2em;
+  color: var(--text-bright);
+}
+
+/* Card text */
+.song-info p {
+  margin: 5px 0;
+  font-size: 0.9em;
+  color: var(--text-main);
+}

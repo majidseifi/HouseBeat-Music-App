@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Request New Artist - HouseBeat</title>
+    <link rel="stylesheet" href="css/water.css" />
+    <link rel="stylesheet" href="css/custom.css" />
+    <style>
+      body {
+        max-width: none !important;
+        margin: 0;
+        padding: 20px;
+      }
+
+      body > div {
+        width: 90%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      #request-form {
+        width: 90%;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      label {
+        display: block;
+        margin-top: 15px;
+        margin-bottom: 5px;
+        width: 100%;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+      }
+
+      #description {
+        width: 100%;
+        height: 70px;
+      }
+
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin: 15px 0;
+      }
+
+      .checkbox-container input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+      }
+
+      .checkbox-container label {
+        margin: 0;
+        display: inline;
+      }
+
+      .required::after {
+        content: " *";
+        color: red;
+      }
+
+      @media (max-width: 768px) {
+        body > div {
+          width: 95%;
+          padding: 0 10px;
+        }
+
+        #request-form {
+          width: 100%;
+          padding: 10px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 10px;
+        }
+
+        input,
+        textarea {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>HouseBeat</h1>
+      <h2>Request a New Artist</h2>
+
+      <nav>
+        <a href="index.html">← Back to Home</a>
+      </nav>
+
+      <hr />
+
+      <form id="request-form" action="https://httpbin.org/post" method="POST">
+        <label for="full-name" class="required">Your Full Name</label>
+        <input type="text" id="full-name" name="user-fullName" required minlength="2" />
+
+        <label for="email" class="required">Your Email Address</label>
+        <input type="email" id="email" name="user-email" required />
+
+        <label for="phone">Your Phone Number (optional)</label>
+        <input type="tel" id="phone" name="user-phone" />
+
+        <label for="artist-name" class="required">Artist Name</label>
+        <input type="text" id="artist-name" name="artistName" required minlength="2" />
+
+        <label for="genre" class="required">Music Genre</label>
+        <input type="text" id="genre" name="genre" list="genres" required />
+        <datalist id="genres">
+          <option value="House"></option>
+          <option value="Deep House"></option>
+          <option value="Tech House"></option>
+          <option value="Progressive House"></option>
+          <option value="Melodic House"></option>
+          <option value="Techno"></option>
+          <option value="Minimal"></option>
+          <option value="Trance"></option>
+          <option value="Ambient"></option>
+          <option value="Electronic"></option>
+        </datalist>
+
+        <label class="required">Social Media Links</label>
+        <div id="social-links">
+          <input
+            type="url"
+            name="socialLinks[]"
+            placeholder="https://..."
+            pattern="https://.*"
+            title="The link should start with https://"
+            required
+          />
+        </div>
+        <button type="button" onclick="addSocialLink()">Add Another Social Link</button>
+
+        <label class="required">Example Songs/Videos</label>
+        <div id="song-links">
+          <input
+            type="url"
+            name="songLinks[]"
+            placeholder="https://..."
+            pattern="https://.*"
+            title="The link should start with https://"
+            required
+          />
+        </div>
+        <button type="button" onclick="addSongLink()">Add Another Song Link</button>
+
+        <div class="checkbox-container">
+          <input type="checkbox" id="explicit" name="explicit" />
+          <label for="explicit">Contains explicit lyrics</label>
+        </div>
+
+        <label for="description" class="required">Why should we add this artist?</label>
+        <textarea id="description" name="description" required minlength="50"></textarea>
+
+        <button type="submit">Submit Request</button>
+      </form>
+    </div>
+
+    <script>
+      function addSocialLink() {
+        const container = document.getElementById("social-links");
+        const input = document.createElement("input");
+        input.type = "url";
+        input.name = "socialLinks[]";
+        input.placeholder = "https://...";
+        input.pattern = "https://.*";
+        input.title = "The link should start with https://";
+        input.required = true;
+        container.appendChild(input);
+      }
+
+      function addSongLink() {
+        const container = document.getElementById("song-links");
+        const input = document.createElement("input");
+        input.type = "url";
+        input.name = "songLinks[]";
+        input.placeholder = "https://...";
+        input.pattern = "https://.*";
+        input.title = "The link should start with https://";
+        input.required = true;
+        container.appendChild(input);
+      }
+
+      document.getElementById("request-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        fetch("https://httpbin.org/post", {
+          method: "POST",
+          body: formData
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Server Response:", data);
+            alert("Artist request submitted successfully!");
+            this.reset();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Error submitting the form. Please try again.");
+          });
+      });
+    </script>
+  </body>
+</html>
